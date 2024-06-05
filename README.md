@@ -11,3 +11,14 @@ Then run the following commands to build and push the image to the GitHub Contai
 docker build -t tempconverter:latest .
 docker push localhost/tempconverter ghcr.io/sehnryr/tempconverter:latest
 ```
+
+## Run the project
+
+To run the project, execute the following command:
+
+```bash
+docker compose up
+```
+
+This will start a mysql container and the tempconverter container. The
+tempconverter container will be available at http://localhost:5000.

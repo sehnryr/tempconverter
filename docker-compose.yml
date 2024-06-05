@@ -1,0 +1,40 @@
+services:
+  app:
+    image: ghcr.io/sehnryr/tempconverter:dev
+    ports:
+      - 5000:5000
+    environment:
+      - DB_USER=username
+      - DB_PASS=supersecretpassword
+      - DB_HOST=db
+      - DB_NAME=dbname
+      - STUDENT=Youn Mélois
+      - COLLEGE=Algebra University College
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - tempconverter-network
+  db:
+    image: mysql:8
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=dbname
+      - MYSQL_USER=username
+      - MYSQL_PASSWORD=supersecretpassword
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 1s
+      timeout: 20s
+      retries: 10
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - tempconverter-network
+
+networks:
+  tempconverter-network:
+    driver: bridge
+
+volumes:
+  db-data:
