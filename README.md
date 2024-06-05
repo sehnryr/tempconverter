@@ -37,8 +37,73 @@ Swarm, but it provides more features and is easier to use than Kubernetes.
 
 ### Using Docker Swarm
 
-> [!NOTE]
-> TODO
+To use Docker Swarm, first initialize the swarm:
+
+```bash
+docker swarm init
+```
+
+Then deploy the stack:
+
+```bash
+docker stack deploy -c docker-stack.yml tempconverter
+```
+
+To scale the tempconverter app, run the following command:
+
+```bash
+docker service scale tempconverter_app=3
+```
+
+#### Troubleshooting
+
+If you get the following error:
+
+```
+Error response from daemon: --live-restore daemon configuration is incompatible with swarm mode
+```
+
+You need to disable live restore in the Docker daemon. To do this, edit the
+`/etc/docker/daemon.json` file and add the following line:
+
+```json
+{
+    "live-restore": false
+}
+```
+
+Then restart the Docker daemon:
+
+```bash
+sudo systemctl restart docker
+```
+
+Then try to deploy the stack again.
+
+If the error persists, you may need to create an override file for the Docker
+service. To do this, add the following to
+`/etc/systemd/system/docker.service.d/override.conf`
+([source](https://github.com/moby/moby/issues/25471#issuecomment-263101090)):
+
+```conf
+[Service]
+ExecStart=
+ExecStart=/usr/bin/dockerd
+```
+
+Then reload the systemd configuration:
+
+```bash
+sudo systemctl daemon-reload
+```
+
+And restart the Docker daemon:
+
+```bash
+sudo systemctl restart docker
+```
+
+Then try to deploy the stack again.
 
 ### Using Rancher
 
