@@ -1,5 +1,7 @@
 FROM python:3.12-alpine
 
+LABEL org.opencontainers.image.source=https://github.com/sehnryr/tempconverter
+
 WORKDIR /app
 
 COPY . /app
