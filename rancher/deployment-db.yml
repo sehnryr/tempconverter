@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tempconverter-db
+  namespace: local
+spec:
+  selector:
+    matchLabels:
+      app: tempconverter-db
+  template:
+    metadata:
+      labels:
+        app: tempconverter-db
+    spec:
+      containers:
+        - name: db
+          image: mysql:8
+          env:
+            - name: MYSQL_RANDOM_ROOT_PASSWORD
+              value: "yes"
+            - name: MYSQL_DATABASE
+              value: dbname
+            - name: MYSQL_USER
+              value: username
+            - name: MYSQL_PASSWORD
+              value: supersecretpassword
+          readinessProbe:
+            exec:
+              command:
+                - "mysqladmin"
+                - "ping"
+                - "-h"
+                - "localhost"
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command:
+                - "mysqladmin"
+                - "ping"
+                - "-h"
+                - "localhost"
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          volumeMounts:
+            - name: db-data
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: db-data-pvc
