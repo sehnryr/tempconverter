@@ -107,5 +107,31 @@ Then try to deploy the stack again.
 
 ### Using Rancher
 
-> [!NOTE]
-> TODO
+To use Rancher, first install Rancher on your server:
+
+```bash
+sudo docker run -d --restart=unless-stopped \
+    -p 80:80 -p 443:443 \
+    --privileged \
+    rancher/rancher:v2.8.4
+```
+
+Then access the Rancher web interface at http://localhost. Follow the
+instructions to set up Rancher and its cli tool.
+
+Then deploy the app and the database:
+
+```bash
+rancher kubectl apply -f persistentvolume-db.yml
+rancher kubectl apply -f persistentvolumeclaim-db.yml
+rancher kubectl apply -f deployment-db.yml
+rancher kubectl apply -f service-db.yml
+rancher kubectl apply -f deployment-app.yml
+rancher kubectl apply -f service-app.yml
+```
+
+To scale the app, run the following command:
+
+```bash
+rancher kubectl scale deployment/tempconverter-app --replicas=3 --namespace=local
+```
