@@ -1,5 +1,17 @@
 # tempconverter
 
+## Table of contents
+
+- [tempconverter](#tempconverter)
+  - [Table of contents](#table-of-contents)
+  - [Publish to GitHub Container Registry](#publish-to-github-container-registry)
+  - [Run the project](#run-the-project)
+  - [Container orchestration](#container-orchestration)
+    - [Using Docker Swarm](#using-docker-swarm)
+      - [Troubleshooting](#troubleshooting)
+    - [Using Rancher](#using-rancher)
+    - [Reflection and Preference](#reflection-and-preference)
+
 ## Publish to GitHub Container Registry
 
 Follow the instructions at https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry
@@ -135,3 +147,16 @@ To scale the app, run the following command:
 ```bash
 rancher kubectl scale deployment/tempconverter-app --replicas=3 --namespace=local
 ```
+
+### Reflection and Preference
+
+I appreciate the simplicity and quick setup of Docker Swarm for smaller projects
+or scenarios where a lightweight solution is sufficient. However, for larger,
+more complex deployments requiring advanced orchestration features, scalability,
+and resilience, Rancher with Kubernetes emerges as the preferred choice.
+
+In conclusion, the choice between Docker Swarm and Rancher with Kubernetes
+ultimately depends on the specific requirements of the project at hand. While
+Docker Swarm offers simplicity and familiarity, Rancher with Kubernetes provides
+a powerful, feature-rich platform for orchestrating containers in
+enterprise-grade environments.
